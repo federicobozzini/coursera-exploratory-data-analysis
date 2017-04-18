@@ -1,0 +1,8 @@
+library("ggplot2")
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+baltimoreNEI <- subset(NEI, fips == "24510")
+byTypeYear <- aggregate(baltimoreNEI$Emissions, by=list(year=baltimoreNEI$year, type=baltimoreNEI$type), FUN=sum)
+png(filename = "plot3.png", width = 480, height = 480)
+qplot(year, x/1000, data=byTypeYear, facets = . ~ type, geom="bar", stat="identity", ylab="PM2.5 emissions (1000 tons)")
+dev.off()

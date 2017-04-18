@@ -1,0 +1,8 @@
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+coalSCCs <- unique(SCC[c(grep("Coal", SCC$SCC.Level.Three), grep("Coal", SCC$EI.Sector)), "SCC"])
+coalNEI <- subset(NEI, SCC %in% coalSCCs)
+byYear <- aggregate(coalNEI$Emissions, by=list(year=coalNEI$year), FUN=sum)
+png(filename = "plot4.png", width = 480, height = 480)
+barplot(byYear$x/1000, names.arg=byYear$year, ylab="PM2.5 emissions (1000 tons)")
+dev.off()

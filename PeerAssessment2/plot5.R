@@ -1,0 +1,8 @@
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+vehicleSCCs <- unique(SCC[c(grep("Motor|Vehicle", SCC$SCC.Level.Three), grep("Motor|Vehicle", SCC$EI.Sector)), "SCC"])
+vehicleBaltimoreNEI <- subset(NEI, SCC %in% vehicleSCCs & fips == "24510")
+byYear <- aggregate(vehicleBaltimoreNEI$Emissions, by=list(year=vehicleBaltimoreNEI$year), FUN=sum)
+png(filename = "plot5.png", width = 480, height = 480)
+barplot(byYear$x/1000, names.arg=byYear$year, ylab="PM2.5 emissions (1000 tons)")
+dev.off()

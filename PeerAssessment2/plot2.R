@@ -1,0 +1,7 @@
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+baltimoreNEI <- subset(NEI, fips == "24510")
+baltimoreByYear <- aggregate(baltimoreNEI$Emissions, by=list(year=baltimoreNEI$year), FUN=sum)
+png(filename = "plot2.png", width = 480, height = 480)
+barplot(baltimoreByYear$x/1000, names.arg=baltimoreByYear$year, ylab="PM2.5 emissions (1000 tons)")
+dev.off()
